@@ -1,0 +1,48 @@
+{
+	"name": "trabalho-final",
+	"version": "1.0.0",
+	"description": "Trabalho final da disciplina de Tecnologias Web do curso de Engenharia de Computação da Universidade Federal do Ceará - Campus Sobral. Trabalho desenvolvido peloas alunos da disciplina matriculados no semestre 2018.2",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Lupo-Albi/tec-web-trabalho-final.git"
+	},
+	"keywords": [
+		"tecnologias",
+		"web",
+		"tec",
+		"tecweb",
+		"trabalho",
+		"final",
+		"ufc",
+		"sobral"
+	],
+	"author": [{
+			"name": "Luanderson Martins",
+			"email": "luanderson-albuquerque@hotmail.com"
+		},
+		{
+			"name": "Amanda Lima"
+		},
+		{
+			"name": "Francisco Igor"
+		},
+		{
+			"name": "Julio Cesar"
+		},
+		{
+			"name": "Rayon Lindraz"
+		},
+		{
+			"name": "Ricardo de Souza"
+		}
+	],
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Lupo-Albi/tec-web-trabalho-final/issues"
+	},
+	"homepage": "https://github.com/Lupo-Albi/tec-web-trabalho-final#readme"
+}
