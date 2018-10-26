@@ -25,17 +25,17 @@ client.connect(function(err){
 
     // Objetos para o povoamento do banco
     var myobj = [
-        { _id: 0, name: 'Anderson', address: 'Rua A', number: 1},
-        { _id: 1, name: 'Jeferson', address: 'Rua B', number: 1},
-        { _id: 2, name: 'Maria', address: 'Rua C', number: 1},
-        { _id: 3, name: 'Joana', address: 'Rua A', number: 2},
-        { _id: 4, name: 'Laura', address: 'Rua A', number: 3},
-        { _id: 5, name: 'Manoela', address: 'Rua B', number: 2},
-        { _id: 6, name: 'Pedro', address: 'Rua C', number: 2},
-        { _id: 7, name: 'Renata', address: 'Rua C', number: 3},
-        { _id: 8, name: 'Carol', address: 'Rua B', number: 3},
-        { _id: 9, name: 'Felipe', address: 'Rua B', number: 4},
-        { _id: 0, name: 'Diego', address: 'Rua A', number: 4}
+        { _id: 0, name: 'Anderson', address: 'Rua A', number: 1, sexo: 'm'},
+        { _id: 1, name: 'Jeferson', address: 'Rua B', number: 1, sexo: 'm'},
+        { _id: 2, name: 'Maria', address: 'Rua C', number: 1, sexo: 'f'},
+        { _id: 3, name: 'Joana', address: 'Rua A', number: 2, sexo: 'f'},
+        { _id: 4, name: 'Laura', address: 'Rua A', number: 3, sexo: 'f'},
+        { _id: 5, name: 'Manoela', address: 'Rua B', number: 2, sexo: 'f'},
+        { _id: 6, name: 'Pedro', address: 'Rua C', number: 2, sexo: 'm'},
+        { _id: 7, name: 'Renata', address: 'Rua C', number: 3, sexo: 'f'},
+        { _id: 8, name: 'Carol', address: 'Rua B', number: 3, sexo:'f'},
+        { _id: 9, name: 'Felipe', address: 'Rua B', number: 4, sexo: 'm'},
+        { _id: 10, name: 'Diego', address: 'Rua A', number: 4, sexo: 'm'}
     ];
 
     // Povoando o banco com os objetos
@@ -43,8 +43,11 @@ client.connect(function(err){
         assert.equal(null, err);
         assert.equal(11, res.insertedCount);
         console.log("Número de inserções feitas: " + res.insertedCount);
-    })
-
+        console.log(res);
+        client.close();
+    });
+});
+/*
     // Variáveis para consultas
     var query = { address: 'Rua A'};
 
@@ -55,6 +58,7 @@ client.connect(function(err){
     db.collection('clientes').find(query, { projection: { _id: 0, name: 1}}).sort(mysort).toArray(function(err, res){
         assert.equal(null, err);
         console.log(res);
-        client.close;
+        client.close();
     });
 })
+*/
