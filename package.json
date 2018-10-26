@@ -20,7 +20,8 @@
 		"ufc",
 		"sobral"
 	],
-	"author": [{
+	"author": [
+		{
 			"name": "Luanderson Martins",
 			"email": "luanderson-albuquerque@hotmail.com"
 		},
@@ -44,5 +45,8 @@
 	"bugs": {
 		"url": "https://github.com/Lupo-Albi/tec-web-trabalho-final/issues"
 	},
-	"homepage": "https://github.com/Lupo-Albi/tec-web-trabalho-final#readme"
+	"homepage": "https://github.com/Lupo-Albi/tec-web-trabalho-final#readme",
+	"dependencies": {
+		"mongodb": "^3.1.8"
+	}
 }
