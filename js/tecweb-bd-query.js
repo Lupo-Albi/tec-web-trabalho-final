@@ -31,12 +31,12 @@ client.connect(function(err){
     // Consultas
 
     // Nome, em ordem alfabética, e sexo das pessoas que moram na Rua A
-    db.collection('clientes').find(ruaA, { projection: {_id: 0, number: 0, sexo: 0}}).sort(name_alf).toArray(function(err, res){
+    db.collection('clientes').find(ruaA, { projection: {_id: 0, number: 0, address: 0}}).sort(name_alf).toArray(function(err, res){
         assert.equal(null, err);
         console.log(res);
     });
     
-    // Nome, em ordem alfabética decrescente, das mulheres que moram na Rua B
+    // Nome, em ordem alfabética-invertida, das mulheres que moram na Rua B
     db.collection('clientes').find( { $and: [ ruaB, mulheres ]}, { projection: { _id: 0, address: 0, number: 0, sexo: 0}}).sort(name_nalf).toArray(function(err, res){
         assert.equal(null, err);
         console.log(res);
