@@ -224,16 +224,19 @@ var CPF = [ValidarCPF, 'CPF inválido! Insira um CPF válido.']
 
 // Essa expressão regular procura por caracteres que são números (0-9), hífen(-) e ponto(.)
 // Explicação dessa RegExp: http://tinyurl.com/yanejejo
-var reCPF = new RegExp('^[0-9]{3}(?:\.)?[0-9]{3}(?:\.)?[0-9]{3}(?:-)?[0-9]{2}$', 'g'); 
-
+var reCPF = new RegExp(/^[0-9]{3}(?:\.)?[0-9]{3}(?:\.)?[0-9]{3}(?:-)?[0-9]{2}$/, 'g'); 
 
 // Expressão regular pra validar o email, que deve corresponder ao critérios dessa expressão
 // Explicação dessa RegExp: http://tinyurl.com/yaptcjo4
-var reEmail = new RegExp('^[a-zA-Z0-9._-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$', 'g');
+var reEmail = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/, 'g');
 
 // Expressão regular pra validar o telefone, que deve corresponder ao critérios dessa expressão
-// Explicação dessa RegExp: http://tinyurl.com/ydgkknn8
-var rePhone = new RegExp('^(?:\()?[0-9]{2}(?:[\)]?[0-9]?)?[0-9]{4}[0-9]{4}$', 'g');
+// Explicação dessa RegExp: http://tinyurl.com/y898etf8
+var rePhone = new RegExp(/^(?:\()?[0-9]{2}(?:[\)]?[0-9]?)?[0-9]{8}$/, 'g');
+
+// Expressão regular para validar a data de nascimento no formato dd/mm/yyyy
+// Explicação dessa RegExp: http://tinyurl.com/yckrrktk
+var reData = new RegExp(/^[0-9]{4}-((?:0)?[1-9]|1[1-2])-((?:0)?[1-9]|[1-2][0-9]|3[0-1])$/, 'g');
 
 /**
  * Bloco de criação de Schemas
@@ -253,13 +256,11 @@ const staffSchema = new Schema
     email: { type: String, required: true, trim: true, lowercase: true, match: reEmail },
     cpf: { type: String, required: true, trim: true, unique: true, minlength: 11, maxlength: 14, match: reCPF, validate: CPF, get: gFormatarCPF, set: sFormatarCPF },
     sexo: { type: String, required: true, trim: true },
-    nascimento: { type: Date, required: true, get: FormatarData },
+    nascimento: { type: Date, required: true, match: reData ,get: FormatarData },
     idade: { type: Number, min: 18, max: 65, set: Idade },
     estadoCivil: { type: String, required: true },
     cargo: { type: String, required: true, trim: true },
 });
-
-staffSchema.pre('save', Idade)
 
 /**
  * Schema para os pacientes
@@ -272,9 +273,9 @@ const patientSchema = new Schema
         last: { type: String, required: true, trim: true, set: TitleCase  },
     },
     email: { type: String, required: true, trim: true, lowercase: true, match: reEmail },
-    cpf: { type: String, required: true, trim: true, unique: true, minlength: 11, maxlength: 14, match: re, validate: cpf, get: gFormatarCPF, set: sFormatarCPF },
+    cpf: { type: String, required: true, trim: true, unique: true, minlength: 11, maxlength: 14, match: reCPF, validate: CPF, get: gFormatarCPF, set: sFormatarCPF },
     sexo: { type: String, required: true, trim: true },
-    nascimento: { type: Date, required: true, get: FormatarData },
+    nascimento: { type: Date, required: true, match: reData ,get: FormatarData },
     idade: { type: Number, min: 18, max: 65, set: Idade },
     estadoCivil: { type: String, required: true },
     address: { type: String, required: true, trim: true, set: TitleCase },
@@ -282,6 +283,7 @@ const patientSchema = new Schema
     blooType: { type: String, required: false },
     fatorRh: { type: String, required: false },
 });
+
 
 var Staff = mongoose.model('Staff', staffSchema);
 
@@ -294,7 +296,7 @@ var funcionario = new Staff({
     email: 'mariaR@exemplo.com',
     cpf: '12345678909',
     sexo: 'feminino',
-    nascimento: '1990-01-01',
+    nascimento: '1990-02-01',
     estadoCivil: 'Solteiro(a)',
     cargo: 'Enfermeiro(a)',
 });
