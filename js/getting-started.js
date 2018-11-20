@@ -1,44 +1,33 @@
-// getting-started.js
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test', { useNewUrlParser:true });
+function Idade(Data)
+{
+    var hoje = new Date();
+    var nascimento = new Date(Data);
 
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function(){
-    // we're connected!
-    console.log('Hi');
-});
+    var diaHoje = hoje.getDay();
+    var mesHoje = hoje.getMonth() + 1; // Janeiro é 0
+    var anoHoje = hoje.getFullYear();
 
-var kittySchema = new mongoose.Schema({
-    name: String,
-});
+    var diaNascimento = nascimento.getDay();
+    var mesNascimento = nascimento.getMonth() + 1;
+    var anoNascimento = nascimento.getFullYear();
 
-kittySchema.methods.speak = function() {
-    var greeting = this.name
-      ? "Meow name is " + this.name
-      : "I don't have a name";
-    console.log(greeting);
+    var idade = anoHoje - anoNascimento;
+
+    if(mesHoje < mesNascimento)
+    {
+        idade = idade - 1;
+    } else if (mesHoje == mesNascimento)
+    {
+        if (diaHoje < diaNascimento)
+        {
+            idade = idade - 1;
+        }
+    }
+
+    return idade;
 }
 
-var Kitten = mongoose.model('Kitten', kittySchema);
+var data = new Date('1990-12-4');
+var eu = Idade(data);
 
-var silence = new Kitten({ name: 'Silence' });
-console.log(silence.name); // 'Silence'
-
-var fluffy = new Kitten({ name: 'fluffy' });
-fluffy.speak(); // "Meow name is fluffy"
-
-fluffy.save(function (err, fluffy){
-    if (err) return console.error(err);
-    fluffy.speak();
-});
-
-Kitten.find(function(err, kittens){
-    if (err) return console.error(err);
-    console.log(kittens);
-});
-
-Kitten.find({ name: /^fluff/ }, function(err, callback){
-    if(err) return console.error(err);
-    console.log(callback);
-});
+console.log(eu);

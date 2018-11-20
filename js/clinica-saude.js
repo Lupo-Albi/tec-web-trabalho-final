@@ -62,13 +62,15 @@ function FullName()
 function Idade(Data)
 {
     var hoje = new Date();
+    var nascimento = new Date(Data);
+
     var diaHoje = hoje.getDay();
     var mesHoje = hoje.getMonth() + 1; // Janeiro é 0
     var anoHoje = hoje.getFullYear();
 
-    var diaNascimento = Data.getDay();
-    var mesNascimento = Data.getMonth() + 1;
-    var anoNascimento = Data.getFullYear();
+    var diaNascimento = nascimento.getDay();
+    var mesNascimento = nascimento.getMonth() + 1;
+    var anoNascimento = nascimento.getFullYear();
 
     var idade = anoHoje - anoNascimento;
 
@@ -238,15 +240,17 @@ var rePhone = new RegExp(/^(?:\()?[0-9]{2}(?:[\)]?[0-9]?)?[0-9]{8}$/, 'g');
 // Explicação dessa RegExp: http://tinyurl.com/yckrrktk
 var reData = new RegExp(/^[0-9]{4}-((?:0)?[1-9]|1[1-2])-((?:0)?[1-9]|[1-2][0-9]|3[0-1])$/, 'g');
 
+// Expressão regular para validar o tipo sanguíneo, aceitando apenas os valores O, A, B ou AB
+// Explicação dessa RegExp: http://tinyurl.com/y8jgtxa9
+var reSangue = new RegExp(/^([Oo]|[Aa]|[Bb]|[Aa][Bb])$/, 'g');
+
 /**
  * Bloco de criação de Schemas
  */
 const Schema = mongoose.Schema;
 
-/**
- * Schema para os funcionários
- */
-const staffSchema = new Schema
+
+const personSchema = new Schema
 ({
     name: 
     {
@@ -256,9 +260,17 @@ const staffSchema = new Schema
     email: { type: String, required: true, trim: true, lowercase: true, match: reEmail },
     cpf: { type: String, required: true, trim: true, unique: true, minlength: 11, maxlength: 14, match: reCPF, validate: CPF, get: gFormatarCPF, set: sFormatarCPF },
     sexo: { type: String, required: true, trim: true },
-    nascimento: { type: Date, required: true, match: reData ,get: FormatarData },
+    nascimento: { type: Date, required: true, match: reData, get: FormatarData },
     idade: { type: Number, min: 18, max: 65, set: Idade },
     estadoCivil: { type: String, required: true },
+});
+
+/**
+ * Schema para os funcionários
+ */
+const staffSchema = new Schema
+({
+    person: personSchema,
     cargo: { type: String, required: true, trim: true },
 });
 
@@ -267,41 +279,46 @@ const staffSchema = new Schema
  */
 const patientSchema = new Schema
 ({
-    name: 
-    {
-        first: { type: String, required: true, trim: true, set: TitleCase },
-        last: { type: String, required: true, trim: true, set: TitleCase  },
-    },
-    email: { type: String, required: true, trim: true, lowercase: true, match: reEmail },
-    cpf: { type: String, required: true, trim: true, unique: true, minlength: 11, maxlength: 14, match: reCPF, validate: CPF, get: gFormatarCPF, set: sFormatarCPF },
-    sexo: { type: String, required: true, trim: true },
-    nascimento: { type: Date, required: true, match: reData ,get: FormatarData },
-    idade: { type: Number, min: 18, max: 65, set: Idade },
-    estadoCivil: { type: String, required: true },
+    person: personSchema,
     address: { type: String, required: true, trim: true, set: TitleCase },
     telefone: { type: [Number], required: true, trim: true, default: undefined, match: rePhone },   
-    blooType: { type: String, required: false },
+    blooType: { type: String, required: false, uppercase: true, match: reSangue },
     fatorRh: { type: String, required: false },
 });
 
+/**
+ * Bloco de middleware (pre and post hooks)
+ */
+personSchema.pre('save', function(next){
+    this.idade = Idade(this.nascimento);
+    next();
+});
+
+/**
+ * Bloco de Virtuals
+ */
+personSchema.virtual('fullName').get(FullName);
 
 var Staff = mongoose.model('Staff', staffSchema);
 
 var funcionario = new Staff({
-    name:
+    person:
     {
-        first: 'Maria',
-        last: 'Ribeiro',
+        name: { first: 'Maria', last: 'Ribeiro'},
+        email: 'mariaR@exemplo.com',
+        cpf: '12345678909',
+        sexo: 'feminino',
+        nascimento: new Date('1990-12-5'),
+        estadoCivil: 'Solteiro(a)',
     },
-    email: 'mariaR@exemplo.com',
-    cpf: '12345678909',
-    sexo: 'feminino',
-    nascimento: '1990-02-01',
-    estadoCivil: 'Solteiro(a)',
     cargo: 'Enfermeiro(a)',
 });
 
-funcionario.save(function(err){
+funcionario.save(function(err)
+{
     if(err) return console.error(err);
-    console.log(funcionario.cpf);
-});
+    console.log(funcionario.person.cpf);
+    console.log(funcionario.cargo);
+    console.log(funcionario.person.nascimento);
+    console.log(funcionario.person.idade);
+})
