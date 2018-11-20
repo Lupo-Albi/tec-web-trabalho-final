@@ -295,12 +295,14 @@ personSchema.pre('save', function(next){
     next();
 });
 
+
 /**
  * Bloco de Virtuals
  */
 personSchema.virtual('fullName').get(function(){
     return this.name.first + ' ' + this.name.last;
 });
+
 
 var Staff = mongoose.model('Staff', staffSchema);
 
