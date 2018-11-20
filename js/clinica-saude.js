@@ -284,6 +284,7 @@ const patientSchema = new Schema
     telefone: { type: [Number], required: true, trim: true, default: undefined, match: rePhone },   
     blooType: { type: String, required: false, uppercase: true, match: reSangue },
     fatorRh: { type: String, required: false },
+    observation: { type: String },
 });
 
 /**
@@ -297,7 +298,9 @@ personSchema.pre('save', function(next){
 /**
  * Bloco de Virtuals
  */
-personSchema.virtual('fullName').get(FullName);
+personSchema.virtual('fullName').get(function(){
+    return this.name.first + ' ' + this.name.last;
+});
 
 var Staff = mongoose.model('Staff', staffSchema);
 
@@ -321,4 +324,5 @@ funcionario.save(function(err)
     console.log(funcionario.cargo);
     console.log(funcionario.person.nascimento);
     console.log(funcionario.person.idade);
+    console.log(funcionaro.person.fullName);
 })
