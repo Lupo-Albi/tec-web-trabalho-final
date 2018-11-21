@@ -326,5 +326,5 @@ funcionario.save(function(err)
     console.log(funcionario.cargo);
     console.log(funcionario.person.nascimento);
     console.log(funcionario.person.idade);
-    console.log(funcionaro.person.fullName);
+    console.log(funcionario.fullName);
 })
