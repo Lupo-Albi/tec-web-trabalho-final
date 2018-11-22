@@ -18,7 +18,7 @@ mongoose.connect(uri, options);
  */
 // Expressão regular para validar os nomes
 // Explicação dessa RegExp: http://tinyurl.com/y9hpd9jv
-reNome = new RegExp(/^[a-záàâãéêíïóôõöúüçñ\s]+$/, 'i');
+var reNome = new RegExp(/^[a-záàâãéêíïóôõöúüçñ\s]+$/, 'i');
 // Expressão regular pra validar o email, que deve corresponder ao critérios dessa expressão
 // Explicação dessa RegExp: http://tinyurl.com/yaptcjo4
 var reEmail = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/);
@@ -34,7 +34,7 @@ var reSangue = new RegExp(/^([o]|[a]|[b]|[a][b])$/, 'i');
  */
 const Schema = mongoose.Schema;
 
-const personSchema = new Schema 
+const personSchema = new Schema
 ({
     _id: Schema.Types.ObjectId,
     name: 
