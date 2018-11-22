@@ -1,13 +1,13 @@
-function Idade(Data)
+Idade = function(Data)
 {
     var hoje = new Date();
     var nascimento = new Date(Data);
 
-    var diaHoje = hoje.getDay();
+    var diaHoje = hoje.getDate();
     var mesHoje = hoje.getMonth() + 1; // Janeiro é 0
     var anoHoje = hoje.getFullYear();
 
-    var diaNascimento = nascimento.getDay();
+    var diaNascimento = nascimento.getDate();
     var mesNascimento = nascimento.getMonth() + 1;
     var anoNascimento = nascimento.getFullYear();
 
@@ -27,7 +27,6 @@ function Idade(Data)
     return idade;
 }
 
-var data = new Date('1990-12-4');
-var eu = Idade(data);
+var data = new Date('1990-12-30');
 
-console.log(eu);
+console.log(Idade(data));

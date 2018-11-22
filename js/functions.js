@@ -159,3 +159,70 @@ exports.FormatarData = function(Data)
 {
     return Data.getDate() + "/" + (Data.getMonth() + 1) + "/" + Data.getFullYear();
 }
+/**
+ * Retorna a data passada para o Horário Padrão de Brasília no formato yyyy-mm-dd
+ * 
+ * @param {String} Data 
+ * 
+ * @return {Date}
+ */
+ exports.SetarData = function(Data)
+{
+    if (typeof Data !== 'string')
+    {
+        return Data;
+    }
+
+    var date_components = Data.split('-');
+    var year = date_components[0];
+    var month = date_components[1];
+    var day = date_components[2];
+    
+    var thisData = year + '-' + month + '-' + day + 'T00:00:00-03:00';       
+    var finalData = new Date(thisData);
+
+    return finalData;
+}
+
+/**
+ * Calcula a idade a partir da data de nascimento
+ * 
+ * @param {String} Data data de nascimento passada para ser retornada a idade 
+ * 
+ * @return {Number}
+ */
+exports.Idade = function(Data)
+{
+    var date_components = Data.split('/');
+    var year = date_components[2];
+    var month = date_components[1];
+    var day = date_components[0];
+
+    var thisData = year + '-' + month + '-' + day;
+
+    var hoje = new Date();
+    var nascimento = new Date(thisData);
+
+    var diaHoje = hoje.getDate();
+    var mesHoje = hoje.getMonth() + 1; // Janeiro é 0
+    var anoHoje = hoje.getFullYear();
+
+    var diaNascimento = nascimento.getDate();
+    var mesNascimento = nascimento.getMonth() + 1;
+    var anoNascimento = nascimento.getFullYear();
+
+    var idade = anoHoje - anoNascimento;
+
+    if(mesHoje < mesNascimento)
+    {
+        idade = idade - 1;
+    } else if (mesHoje == mesNascimento)
+    {
+        if (diaHoje < diaNascimento)
+        {
+            idade = idade - 1;
+        }
+    }
+
+    return idade;
+}

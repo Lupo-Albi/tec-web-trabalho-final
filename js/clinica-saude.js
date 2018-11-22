@@ -290,7 +290,8 @@ const patientSchema = new Schema
 /**
  * Bloco de middleware (pre and post hooks)
  */
-personSchema.pre('save', function(next){
+personSchema.pre('save', function(next)
+{
     this.idade = Idade(this.nascimento);
     next();
 });
